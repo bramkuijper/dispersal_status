@@ -1,0 +1,96 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      2310,         87]
+NotebookOptionsPosition[      1807,         64]
+NotebookOutlinePosition[      2163,         80]
+CellTagsIndexPosition[      2120,         77]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+Knowledge about immigration status and inheritance?\
+\>", "Title",
+ CellChangeTimes->{{3.682963715251602*^9, 3.6829637479299793`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Patch frequencies", "Section",
+ CellChangeTimes->{{3.682963783537328*^9, 3.682963785456912*^9}}],
+
+Cell["\<\
+We have f[1,a,d], f[1,a,p], f[1,m,d], f[1,m,p], f[1,etc\
+\>", "Text",
+ CellChangeTimes->{{3.682963789192925*^9, 3.6829638437740993`*^9}, {
+  3.68296396881841*^9, 3.682963969096774*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"pad", "[", 
+   RowBox[{"e_", ",", "state_", ",", "imm_"}], "]"}], ":="}]], "Input",
+ CellChangeTimes->{{3.682965287715393*^9, 3.6829653129769163`*^9}}],
+
+Cell["", "Text",
+ CellChangeTimes->{{3.6829639840722017`*^9, 3.682963999503079*^9}}],
+
+Cell[BoxData[
+ RowBox[{"df1addt1", "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"s", "[", "2", "]"}], 
+    RowBox[{"f", "[", 
+     RowBox[{"2", ",", "m", ",", "d"}], "]"}]}], "-", 
+   RowBox[{
+    RowBox[{"s", "[", "1", "]"}], 
+    RowBox[{"f", "[", 
+     RowBox[{"1", ",", "a", ",", "d"}], "]"}]}], "-", 
+   RowBox[{"mu", "[", 
+    RowBox[{"1", ",", "a", ",", "d"}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.6829639705115967`*^9, 3.682964044326829*^9}}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{2487, 1573},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.5,
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 144, 3, 138, "Title"],
+Cell[CellGroupData[{
+Cell[748, 29, 102, 1, 120, "Section"],
+Cell[853, 32, 195, 4, 46, "Text"],
+Cell[1051, 38, 186, 4, 46, "Input"],
+Cell[1240, 44, 84, 1, 46, "Text"],
+Cell[1327, 47, 452, 13, 46, "Input"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
