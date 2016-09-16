@@ -1,0 +1,219 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[      7330,        210]
+NotebookOptionsPosition[      6713,        184]
+NotebookOutlinePosition[      7051,        199]
+CellTagsIndexPosition[      7008,        196]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Dispersal status, 2 player model", "Section",
+ CellChangeTimes->{{3.6830236832312202`*^9, 3.683023690079509*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.68302370499179*^9, 3.683023710028418*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"stat", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "a\[ScriptD]", "}"}], ",", 
+     RowBox[{"{", "a\[ScriptN]", "}"}], ",", 
+     RowBox[{"{", "m\[ScriptD]", "}"}], ",", 
+     RowBox[{"{", "m\[ScriptN]", "}"}]}], "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.683023718482452*^9, 3.683023729146256*^9}, {
+  3.683023782947151*^9, 3.683023823410535*^9}, {3.683023980912504*^9, 
+  3.683023985453875*^9}, {3.6830242259363194`*^9, 3.683024232319631*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"patches", "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Table", "[", 
+     RowBox[{
+      RowBox[{"f", "@@", 
+       RowBox[{"Join", "[", 
+        RowBox[{
+         RowBox[{"{", "ex", "}"}], ",", 
+         RowBox[{"Flatten", "[", 
+          RowBox[{"Sort", "[", 
+           RowBox[{"{", 
+            RowBox[{"{", 
+             RowBox[{"state1", ",", "state2"}], "}"}], "}"}], "]"}], "]"}]}], 
+        "]"}]}], ",", 
+      RowBox[{"{", 
+       RowBox[{"ex", ",", "1", ",", "2"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"state1", ",", "states"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"state2", ",", "states"}], "}"}]}], "]"}], "//", "Flatten"}], "//",
+    "Union"}]}]], "Input",
+ CellChangeTimes->{{3.6830237336208897`*^9, 3.683023734446595*^9}, {
+  3.683023766864687*^9, 3.6830237773925657`*^9}, {3.683023826904359*^9, 
+  3.6830238514095583`*^9}, {3.683023987997581*^9, 3.683023988808614*^9}, {
+  3.6830243388569717`*^9, 3.683024372520837*^9}, {3.683024434154195*^9, 
+  3.683024453319921*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "a\[ScriptD]", ",", "a\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "a\[ScriptD]", ",", "a\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "a\[ScriptD]", ",", "m\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "a\[ScriptD]", ",", "m\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "a\[ScriptN]", ",", "a\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "a\[ScriptN]", ",", "a\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "a\[ScriptN]", ",", "m\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "a\[ScriptN]", ",", "m\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "m\[ScriptD]", ",", "a\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "m\[ScriptD]", ",", "a\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "m\[ScriptD]", ",", "m\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "m\[ScriptD]", ",", "m\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "m\[ScriptN]", ",", "a\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "m\[ScriptN]", ",", "a\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "m\[ScriptN]", ",", "m\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "m\[ScriptN]", ",", "m\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "a\[ScriptD]", ",", "a\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "a\[ScriptD]", ",", "a\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "a\[ScriptD]", ",", "m\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "a\[ScriptD]", ",", "m\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "a\[ScriptN]", ",", "a\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "a\[ScriptN]", ",", "a\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "a\[ScriptN]", ",", "m\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "a\[ScriptN]", ",", "m\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "m\[ScriptD]", ",", "a\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "m\[ScriptD]", ",", "a\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "m\[ScriptD]", ",", "m\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "m\[ScriptD]", ",", "m\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "m\[ScriptN]", ",", "a\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "m\[ScriptN]", ",", "a\[ScriptN]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "m\[ScriptN]", ",", "m\[ScriptD]"}], "]"}], ",", 
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "m\[ScriptN]", ",", "m\[ScriptN]"}], "]"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.683023848148427*^9, 3.68302386555501*^9}, 
+   3.6830239898978558`*^9, 3.683024374623974*^9, {3.6830244355678988`*^9, 
+   3.6830244540512657`*^9}}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"dfadaddt", "[", "ex_", "]"}], ":=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"-", 
+     RowBox[{"s", "[", "ex", "]"}]}], 
+    RowBox[{"f", "[", 
+     RowBox[{"ex", ",", "m\[ScriptD]", ",", "m\[ScriptD]"}], "]"}]}], "+", 
+   RowBox[{
+    RowBox[{"s", "[", 
+     RowBox[{"3", "-", "ex"}], "]"}], 
+    RowBox[{"f", "[", 
+     RowBox[{
+      RowBox[{"3", "-", "ex"}], ",", "m\[ScriptD]", ",", "m\[ScriptD]"}], 
+     "]"}]}], "-", "2"}]}]], "Input",
+ CellChangeTimes->{{3.683024477067175*^9, 3.68302453963442*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"dfadaddt", "[", "2", "]"}]], "Input",
+ CellChangeTimes->{{3.683024522877369*^9, 3.68302452691722*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"f", "[", 
+    RowBox[{"1", ",", "m\[ScriptD]", ",", "m\[ScriptD]"}], "]"}], " ", 
+   RowBox[{"s", "[", "1", "]"}]}], "-", 
+  RowBox[{
+   RowBox[{"f", "[", 
+    RowBox[{"2", ",", "m\[ScriptD]", ",", "m\[ScriptD]"}], "]"}], " ", 
+   RowBox[{"s", "[", "2", "]"}]}]}]], "Output",
+ CellChangeTimes->{3.683024527183434*^9}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{640, 750},
+WindowMargins->{{140, Automatic}, {Automatic, 42}},
+FrontEndVersion->"7.0 for Linux x86 (64-bit) (February 25, 2009)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[567, 22, 119, 1, 73, "Section"],
+Cell[689, 25, 138, 2, 32, "Input"],
+Cell[830, 29, 490, 11, 32, "Input"],
+Cell[CellGroupData[{
+Cell[1345, 44, 1032, 27, 99, "Input"],
+Cell[2380, 73, 3233, 70, 172, "Output"]
+}, Open  ]],
+Cell[5628, 146, 539, 16, 32, "Input"],
+Cell[CellGroupData[{
+Cell[6192, 166, 126, 2, 32, "Input"],
+Cell[6321, 170, 364, 10, 31, "Output"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
