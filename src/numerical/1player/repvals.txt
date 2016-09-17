@@ -1,0 +1,47 @@
+double dvaimm1dttplus1, dvaimm2dttplus1, dvmimm1dttplus1, dvmimm2dttplus1, dvaphil1dttplus1, dvaphil2dttplus1, dvmphil1dttplus1, dvmphil2dttplus1;
+for (int iter=0; iter<1e08; ++iter) {
+dvaimm1dttplus1 = bound0(v(1,a,imm) + 0.01*(-(d*mu(a)*v(1,a,imm)) + (1 - d)*mu(a)*(-v(1,a,imm) + p(1,imm)*v(1,a,phil) + (1 - p(1,imm))*v(1,m,phil)) + s(1)*(-v(1,a,imm) + v(2,m,imm)) + d*(f(1,a,imm)*mu(a)*(p(1,imm)*v(1,a,imm) + (1 - p(1,imm))*v(1,m,imm)) + f(1,a,phil)*mu(a)*(p(1,imm)*v(1,a,imm) + (1 - p(1,imm))*v(1,m,imm)) + f(1,m,imm)*mu(m)*(p(1,imm)*v(1,a,imm) + (1 - p(1,imm))*v(1,m,imm)) + f(1,m,phil)*mu(m)*(p(1,imm)*v(1,a,imm) + (1 - p(1,imm))*v(1,m,imm)) + f(2,a,imm)*mu(a)*((1 - p(1,imm))*v(2,a,imm) + p(1,imm)*v(2,m,imm)) + f(2,a,phil)*mu(a)*((1 - p(1,imm))*v(2,a,imm) + p(1,imm)*v(2,m,imm)) + f(2,m,imm)*mu(m)*((1 - p(1,imm))*v(2,a,imm) + p(1,imm)*v(2,m,imm)) + f(2,m,phil)*mu(m)*((1 - p(1,imm))*v(2,a,imm) + p(1,imm)*v(2,m,imm)))));
+
+dvaimm2dttplus1 = bound0(v(2,a,imm) + 0.01*(s(2)*(v(1,m,imm) - v(2,a,imm)) - d*mu(a)*v(2,a,imm) + d*(f(1,a,imm)*mu(a)*(p(2,imm)*v(1,a,imm) + (1 - p(2,imm))*v(1,m,imm)) + f(1,a,phil)*mu(a)*(p(2,imm)*v(1,a,imm) + (1 - p(2,imm))*v(1,m,imm)) + f(1,m,imm)*mu(m)*(p(2,imm)*v(1,a,imm) + (1 - p(2,imm))*v(1,m,imm)) + f(1,m,phil)*mu(m)*(p(2,imm)*v(1,a,imm) + (1 - p(2,imm))*v(1,m,imm)) + f(2,a,imm)*mu(a)*((1 - p(2,imm))*v(2,a,imm) + p(2,imm)*v(2,m,imm)) + f(2,a,phil)*mu(a)*((1 - p(2,imm))*v(2,a,imm) + p(2,imm)*v(2,m,imm)) + f(2,m,imm)*mu(m)*((1 - p(2,imm))*v(2,a,imm) + p(2,imm)*v(2,m,imm)) + f(2,m,phil)*mu(m)*((1 - p(2,imm))*v(2,a,imm) + p(2,imm)*v(2,m,imm))) + (1 - d)*mu(a)*(-v(2,a,imm) + (1 - p(2,imm))*v(2,a,phil) + p(2,imm)*v(2,m,phil))));
+
+dvmimm1dttplus1 = bound0(v(1,m,imm) + 0.01*(-(d*mu(m)*v(1,m,imm)) + (1 - d)*mu(m)*(p(2,imm)*v(1,a,phil) - v(1,m,imm) + (1 - p(2,imm))*v(1,m,phil)) + s(1)*(-v(1,m,imm) + v(2,a,imm)) + d*(f(1,a,imm)*mu(a)*(p(2,imm)*v(1,a,imm) + (1 - p(2,imm))*v(1,m,imm)) + f(1,a,phil)*mu(a)*(p(2,imm)*v(1,a,imm) + (1 - p(2,imm))*v(1,m,imm)) + f(1,m,imm)*mu(m)*(p(2,imm)*v(1,a,imm) + (1 - p(2,imm))*v(1,m,imm)) + f(1,m,phil)*mu(m)*(p(2,imm)*v(1,a,imm) + (1 - p(2,imm))*v(1,m,imm)) + f(2,a,imm)*mu(a)*((1 - p(2,imm))*v(2,a,imm) + p(2,imm)*v(2,m,imm)) + f(2,a,phil)*mu(a)*((1 - p(2,imm))*v(2,a,imm) + p(2,imm)*v(2,m,imm)) + f(2,m,imm)*mu(m)*((1 - p(2,imm))*v(2,a,imm) + p(2,imm)*v(2,m,imm)) + f(2,m,phil)*mu(m)*((1 - p(2,imm))*v(2,a,imm) + p(2,imm)*v(2,m,imm)))));
+
+dvmimm2dttplus1 = bound0(v(2,m,imm) + 0.01*(s(2)*(v(1,a,imm) - v(2,m,imm)) - d*mu(m)*v(2,m,imm) + d*(f(1,a,imm)*mu(a)*(p(1,imm)*v(1,a,imm) + (1 - p(1,imm))*v(1,m,imm)) + f(1,a,phil)*mu(a)*(p(1,imm)*v(1,a,imm) + (1 - p(1,imm))*v(1,m,imm)) + f(1,m,imm)*mu(m)*(p(1,imm)*v(1,a,imm) + (1 - p(1,imm))*v(1,m,imm)) + f(1,m,phil)*mu(m)*(p(1,imm)*v(1,a,imm) + (1 - p(1,imm))*v(1,m,imm)) + f(2,a,imm)*mu(a)*((1 - p(1,imm))*v(2,a,imm) + p(1,imm)*v(2,m,imm)) + f(2,a,phil)*mu(a)*((1 - p(1,imm))*v(2,a,imm) + p(1,imm)*v(2,m,imm)) + f(2,m,imm)*mu(m)*((1 - p(1,imm))*v(2,a,imm) + p(1,imm)*v(2,m,imm)) + f(2,m,phil)*mu(m)*((1 - p(1,imm))*v(2,a,imm) + p(1,imm)*v(2,m,imm))) + (1 - d)*mu(m)*((1 - p(1,imm))*v(2,a,phil) - v(2,m,imm) + p(1,imm)*v(2,m,phil))));
+
+dvaphil1dttplus1 = bound0(v(1,a,phil) + 0.01*(-(d*mu(a)*v(1,a,phil)) + (1 - d)*mu(a)*(-v(1,a,phil) + p(1,phil)*v(1,a,phil) + (1 - p(1,phil))*v(1,m,phil)) + d*(f(1,a,imm)*mu(a)*(p(1,phil)*v(1,a,imm) + (1 - p(1,phil))*v(1,m,imm)) + f(1,a,phil)*mu(a)*(p(1,phil)*v(1,a,imm) + (1 - p(1,phil))*v(1,m,imm)) + f(1,m,imm)*mu(m)*(p(1,phil)*v(1,a,imm) + (1 - p(1,phil))*v(1,m,imm)) + f(1,m,phil)*mu(m)*(p(1,phil)*v(1,a,imm) + (1 - p(1,phil))*v(1,m,imm)) + f(2,a,imm)*mu(a)*((1 - p(1,phil))*v(2,a,imm) + p(1,phil)*v(2,m,imm)) + f(2,a,phil)*mu(a)*((1 - p(1,phil))*v(2,a,imm) + p(1,phil)*v(2,m,imm)) + f(2,m,imm)*mu(m)*((1 - p(1,phil))*v(2,a,imm) + p(1,phil)*v(2,m,imm)) + f(2,m,phil)*mu(m)*((1 - p(1,phil))*v(2,a,imm) + p(1,phil)*v(2,m,imm))) + s(1)*(-v(1,a,phil) + v(2,m,phil))));
+
+dvaphil2dttplus1 = bound0(v(2,a,phil) + 0.01*(s(2)*(v(1,m,phil) - v(2,a,phil)) - d*mu(a)*v(2,a,phil) + d*(f(1,a,imm)*mu(a)*(p(2,phil)*v(1,a,imm) + (1 - p(2,phil))*v(1,m,imm)) + f(1,a,phil)*mu(a)*(p(2,phil)*v(1,a,imm) + (1 - p(2,phil))*v(1,m,imm)) + f(1,m,imm)*mu(m)*(p(2,phil)*v(1,a,imm) + (1 - p(2,phil))*v(1,m,imm)) + f(1,m,phil)*mu(m)*(p(2,phil)*v(1,a,imm) + (1 - p(2,phil))*v(1,m,imm)) + f(2,a,imm)*mu(a)*((1 - p(2,phil))*v(2,a,imm) + p(2,phil)*v(2,m,imm)) + f(2,a,phil)*mu(a)*((1 - p(2,phil))*v(2,a,imm) + p(2,phil)*v(2,m,imm)) + f(2,m,imm)*mu(m)*((1 - p(2,phil))*v(2,a,imm) + p(2,phil)*v(2,m,imm)) + f(2,m,phil)*mu(m)*((1 - p(2,phil))*v(2,a,imm) + p(2,phil)*v(2,m,imm))) + (1 - d)*mu(a)*(-v(2,a,phil) + (1 - p(2,phil))*v(2,a,phil) + p(2,phil)*v(2,m,phil))));
+
+dvmphil1dttplus1 = bound0(v(1,m,phil) + 0.01*(-(d*mu(m)*v(1,m,phil)) + (1 - d)*mu(m)*(p(2,phil)*v(1,a,phil) - v(1,m,phil) + (1 - p(2,phil))*v(1,m,phil)) + s(1)*(-v(1,m,phil) + v(2,a,phil)) + d*(f(1,a,imm)*mu(a)*(p(2,phil)*v(1,a,imm) + (1 - p(2,phil))*v(1,m,imm)) + f(1,a,phil)*mu(a)*(p(2,phil)*v(1,a,imm) + (1 - p(2,phil))*v(1,m,imm)) + f(1,m,imm)*mu(m)*(p(2,phil)*v(1,a,imm) + (1 - p(2,phil))*v(1,m,imm)) + f(1,m,phil)*mu(m)*(p(2,phil)*v(1,a,imm) + (1 - p(2,phil))*v(1,m,imm)) + f(2,a,imm)*mu(a)*((1 - p(2,phil))*v(2,a,imm) + p(2,phil)*v(2,m,imm)) + f(2,a,phil)*mu(a)*((1 - p(2,phil))*v(2,a,imm) + p(2,phil)*v(2,m,imm)) + f(2,m,imm)*mu(m)*((1 - p(2,phil))*v(2,a,imm) + p(2,phil)*v(2,m,imm)) + f(2,m,phil)*mu(m)*((1 - p(2,phil))*v(2,a,imm) + p(2,phil)*v(2,m,imm)))));
+
+dvmphil2dttplus1 = bound0(v(2,m,phil) + 0.01*(d*(f(1,a,imm)*mu(a)*(p(1,phil)*v(1,a,imm) + (1 - p(1,phil))*v(1,m,imm)) + f(1,a,phil)*mu(a)*(p(1,phil)*v(1,a,imm) + (1 - p(1,phil))*v(1,m,imm)) + f(1,m,imm)*mu(m)*(p(1,phil)*v(1,a,imm) + (1 - p(1,phil))*v(1,m,imm)) + f(1,m,phil)*mu(m)*(p(1,phil)*v(1,a,imm) + (1 - p(1,phil))*v(1,m,imm)) + f(2,a,imm)*mu(a)*((1 - p(1,phil))*v(2,a,imm) + p(1,phil)*v(2,m,imm)) + f(2,a,phil)*mu(a)*((1 - p(1,phil))*v(2,a,imm) + p(1,phil)*v(2,m,imm)) + f(2,m,imm)*mu(m)*((1 - p(1,phil))*v(2,a,imm) + p(1,phil)*v(2,m,imm)) + f(2,m,phil)*mu(m)*((1 - p(1,phil))*v(2,a,imm) + p(1,phil)*v(2,m,imm))) + s(2)*(v(1,a,phil) - v(2,m,phil)) - d*mu(m)*v(2,m,phil) + (1 - d)*mu(m)*((1 - p(1,phil))*v(2,a,phil) - v(2,m,phil) + p(1,phil)*v(2,m,phil))));
+
+if (
+fabs(dvaimm1dttplus1 - v[1,a,imm]) < 1e-07 
+&& fabs(dvaimm2dttplus1 - v[2,a,imm]) < 1e-07 
+&& fabs(dvmimm1dttplus1 - v[1,m,imm]) < 1e-07 
+&& fabs(dvmimm2dttplus1 - v[2,m,imm]) < 1e-07
+&& fabs(dvaphil1dttplus1 - v[1,a,phil]) < 1e-07 
+&& fabs(dvaphil2dttplus1 - v[2,a,phil]) < 1e-07 
+&& fabs(dvmphil1dttplus1 - v[1,m,phil]) < 1e-07 
+&& fabs(dvmphil2dttplus1 - v[2,m,phil]) < 1e-07) {
+break;
+}
+
+v[1,a,imm] = dvaimm1dttplus1;
+v[2,a,imm] = dvaimm2dttplus1;
+v[1,m,imm] = dvmimm1dttplus1;
+v[2,m,imm] = dvmimm2dttplus1;
+v[1,a,phil] = dvaphil1dttplus1;
+v[2,a,phil] = dvaphil2dttplus1;
+v[1,m,phil] = dvmphil1dttplus1;
+v[2,m,phil] = dvmphil2dttplus1;}
+
+gsl_vector_set(f, 0, v[1,a,imm]);
+gsl_vector_set(f, 1, v[2,a,imm]);
+gsl_vector_set(f, 2, v[1,m,imm]);
+gsl_vector_set(f, 3, v[2,m,imm]);
+gsl_vector_set(f, 4, v[1,a,phil]);
+gsl_vector_set(f, 5, v[2,a,phil]);
+gsl_vector_set(f, 6, v[1,m,phil]);
+gsl_vector_set(f, 7, v[2,m,phil]);
