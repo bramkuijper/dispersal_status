@@ -49,23 +49,34 @@ double C[2] = {0,0};
 double mu_h = 0.01;
 double sdmu_h = 0.01;
 
+// enum indicating state of an individual
+enum ind_state {
+    adapted_imm = 0, // adapted and immigrant
+    adapted_phil = 1, // adapted and philopatric
+    maladapted_imm = 2, // maladapted and immigrant
+    maladapted_phil = 3 // maladapted and philopatric
+}
+
+size_t n_states = 4;
+
 // diploid individuals
 struct Individual
 {
     double d[2]; // one locus coding for migration
     double p1_imm[2]; // proportion z1 offspring by z1 immigrant
     double p2_imm[2]; // proportion z1 offspring by z2 immigrant
-    double p1_nat[2]; // proportion z1 offspring by z1 native
-    double p2_nat[2]; // proportion z1 offspring by z2 native
+    double p1phil[2]; // proportion z1 offspring by z1 native
+    double p2phil[2]; // proportion z1 offspring by z2 native
     bool z; // state of the individual wrt its environment, 0, 1
 
-    bool immigrant; // individual has dispersed to the current patch
+    ind_state state; 
 };
 
+// patch containing the individual
 struct Patch
 {
     Individual locals[Npp]; // the local senior
-    bool state; //environmental state of the patch
+    bool environment; //environmental state of the patch
 
 };
 
@@ -75,10 +86,10 @@ Patch MetaPop[Npatch];
 // statistics for sampling
 // - number of patches in environment one or two
 // - with individual in state (a,imm), (a,phil), (m, imm), (m, phil)
-size_t Npatches[2][4];
+size_t Npatches[2][n_states];
 
 // next to counts store lists with ids
-size_t patch_ids[2][4][Npatch];
+size_t patch_ids[2][n_states][Npatch];
 
 // give the outputfile a unique name
 string filename("sim_disp");
@@ -125,40 +136,39 @@ void init_pop()
     // initialize patch state counters and set them to 0
     for (int envt_i = 0; envt_i < 2; ++envt_i)
     {
-        for (int n_states = 0; n_states <= 3; ++n_states)
+        for (int state_i = 0; state_i < n_states; ++state_i)
         {
-            Npatches[envt_i][n_states] = 0;
+            Npatches[envt_i][state_i] = 0;
         }
     }
+
+    ind_state current_state;
 
     // initialize all the patches
     for (size_t i = 0; i < Npatch; ++i)
     {
         //patches are randomly put in env + or -
-        MetaPop[i].state = gsl_rng_uniform(r) < 0.5; 
+        MetaPop[i].environment = gsl_rng_uniform(r) < 0.5; 
 
-        n_adapted = 0;
-    
         //initialize breeders
         for (size_t j = 0; j < Npp; ++j)
         {
             // randomly assign initial phenotypes
             MetaPop[i].locals[j].z = gsl_rng_uniform(r) < 0.5;
-            MetaPop[i].locals[j].immigrant = 0;
 
-            if (MetaPop[i].locals[j].z == MetaPop[i].state)
-            {
-                ++n_adapted;
-            }
-        
+            current_state = 
+                MetaPop[i].locals[j].z == MetaPop[i].state ? adapted_phil : maladapted_phil;
+       
+            MetaPop[i].locals[j].state = current_state;
+    
             // initialize allelic values
             for (int allele = 0; allele < 2; ++allele)
             {
                 MetaPop[i].locals[j].d[allele] = d0;
                 MetaPop[i].locals[j].p1_imm[allele] = h0;
                 MetaPop[i].locals[j].p2_imm[allele] = h0;
-                MetaPop[i].locals[j].p1_nat[allele] = h0;
-                MetaPop[i].locals[j].p2_nat[allele] = h0;
+                MetaPop[i].locals[j].p1phil[allele] = h0;
+                MetaPop[i].locals[j].p2phil[allele] = h0;
             }
         }
 
@@ -167,13 +177,13 @@ void init_pop()
         // (iii) containing n_adapted individuals
         //
         size_t Npatches_of_this_type = 
-            Npatches[MetaPop[i].state][0][Npp - n_adapted][0][n_adapted];
+            Npatches[MetaPop[i].environment][MetaPop[i].locals[0].state];
 
         // append this patch to the corresponding stack of patch id's
-        patch_ids[MetaPop[i].state][0][Npp - n_adapted][0][n_adapted][Npatches_of_this_type] = i;
+        patch_ids[MetaPop[i].environment][MetaPop[i].locals[0].state][Npatches_of_this_type] = i;
 
         // update counter
-        ++Npatches[MetaPop[i].state][0][Npp - n_adapted][0][n_adapted];
+        ++Npatches[MetaPop[i].environment][MetaPop[i].locals[0].state];
     }
 }
 
@@ -197,8 +207,7 @@ void create_kid(Individual &mother, Individual &Kid)
     // otherwise p2
     double expr_h = 0.5;
 
-
-    if (mother.immigrant)
+    if (mother.state == adapted_imm || mother.state == maladapted_imm)
     {
         // mother's phenotype is one
         expr_h = mother.z == 0 ? 0.5 * (mother.p1_imm[0] + mother.p1_imm[1]) 
@@ -207,9 +216,9 @@ void create_kid(Individual &mother, Individual &Kid)
     }
     else
     {
-        expr_h = mother.z == 0 ? 0.5 * (mother.p1_nat[0] + mother.p1_nat[1]) 
+        expr_h = mother.z == 0 ? 0.5 * (mother.p1phil[0] + mother.p1phil[1]) 
                                     :
-                                    0.5 * (mother.p2_nat[0] + mother.p2_nat[1]);
+                                    0.5 * (mother.p2phil[0] + mother.p2phil[1]);
     }
 
     // offspring gets z1 or z2 phenotype
@@ -221,8 +230,8 @@ void create_kid(Individual &mother, Individual &Kid)
         Kid.d[allele_i] = mut_h(mother.d[allele_i]);
         Kid.p1_imm[allele_i] = mut_h(mother.p1_imm[allele_i]);
         Kid.p2_imm[allele_i] = mut_h(mother.p2_imm[allele_i]);
-        Kid.p1_nat[allele_i] = mut_h(mother.p1_nat[allele_i]);
-        Kid.p2_nat[allele_i] = mut_h(mother.p2_nat[allele_i]);
+        Kid.p1phil[allele_i] = mut_h(mother.p1phil[allele_i]);
+        Kid.p2phil[allele_i] = mut_h(mother.p2phil[allele_i]);
     }
 }
 
@@ -230,15 +239,15 @@ void create_kid(Individual &mother, Individual &Kid)
 void write_data()
 {
     // get variance and means
-    double p1_imm,p2_imm,p1_nat,p2_nat,d,vard,varp1_imm,varp2_imm,varp1_nat,varp2_nat;
+    double p1_imm,p2_imm,p1phil,p2phil,d,vard,varp1_imm,varp2_imm,varp1phil,varp2phil;
     double meanp1_imm = 0;
     double meanp2_imm = 0;
-    double meanp1_nat = 0;
-    double meanp2_nat = 0;
+    double meanp1phil = 0;
+    double meanp2phil = 0;
     double ssp1_imm = 0;
     double ssp2_imm = 0;
-    double ssp1_nat = 0;
-    double ssp2_nat = 0;
+    double ssp1phil = 0;
+    double ssp2phil = 0;
 
     double meand = 0;
     double ssd = 0;
@@ -252,18 +261,18 @@ void write_data()
             d = 0.5 * (MetaPop[i].locals[j].d[0] + MetaPop[i].locals[j].d[1]);
             p1_imm = 0.5 * (MetaPop[i].locals[j].p1_imm[0] + MetaPop[i].locals[j].p1_imm[1]);
             p2_imm = .5 * (MetaPop[i].locals[j].p2_imm[0] + MetaPop[i].locals[j].p2_imm[1]);
-            p1_nat = 0.5 * (MetaPop[i].locals[j].p1_nat[0] + MetaPop[i].locals[j].p1_nat[1]);
-            p2_nat = .5 * (MetaPop[i].locals[j].p2_nat[0] + MetaPop[i].locals[j].p2_nat[1]);
+            p1phil = 0.5 * (MetaPop[i].locals[j].p1phil[0] + MetaPop[i].locals[j].p1phil[1]);
+            p2phil = .5 * (MetaPop[i].locals[j].p2phil[0] + MetaPop[i].locals[j].p2phil[1]);
 
             meanp1_imm+=p1_imm;
             meanp2_imm+=p2_imm;
-            meanp1_nat+=p1_nat;
-            meanp2_nat+=p2_nat;
+            meanp1phil+=p1phil;
+            meanp2phil+=p2phil;
             meand+=d;
             ssp1_imm+=p1_imm*p1_imm;
             ssp2_imm+=p2_imm*p2_imm;
-            ssp1_nat+=p1_nat*p1_nat;
-            ssp2_nat+=p2_nat*p2_nat;
+            ssp1phil+=p1phil*p1phil;
+            ssp2phil+=p2phil*p2phil;
             ssd+=d*d;
         }    
     }
@@ -273,15 +282,9 @@ void write_data()
     // write down all the patch frequency combinations
     for (size_t envt_i = 0; envt_i < 2; ++envt_i)
     {
-        for (size_t n_adapted_imm = 0; n_adapted_imm <= Npp; ++n_adapted_imm)
+        for (size_t state_i = 0; state_i < n_states; ++state_i)
         {
-            for (size_t n_maladapted_imm = 0; n_maladapted_imm <= Npp - n_adapted_imm; ++n_maladapted_imm)
-            {
-                for (size_t n_maladapted_nat = 0; n_maladapted_nat <= Npp - n_adapted_imm - n_maladapted_imm; ++n_maladapted_nat)
-                {
-                    DataFile << setprecision(5) << (double)Npatches[envt_i][n_maladapted_imm][n_adapted_imm][n_maladapted_nat][Npp - n_maladapted_imm - n_adapted_imm - n_maladapted_nat] / Npatch << ";";
-                }
-            }
+            cout << Npatches[envt_i][state_i] / Npatch << ";";
         }
     }
 
@@ -289,10 +292,10 @@ void write_data()
     meanp2_imm /= Npatch * 2;
     varp1_imm = ssp1_imm / (Npatch * 2) - meanp1_imm*meanp1_imm;
     varp2_imm = ssp2_imm / (Npatch * 2) - meanp2_imm*meanp2_imm;
-    meanp1_nat /= Npatch * 2;
-    meanp2_nat /= Npatch * 2;
-    varp1_nat = ssp1_nat / (Npatch * 2) - meanp1_nat*meanp1_nat;
-    varp2_nat = ssp2_nat / (Npatch * 2) - meanp2_nat*meanp2_nat;
+    meanp1phil /= Npatch * 2;
+    meanp2phil /= Npatch * 2;
+    varp1phil = ssp1phil / (Npatch * 2) - meanp1phil*meanp1phil;
+    varp2phil = ssp2phil / (Npatch * 2) - meanp2phil*meanp2phil;
     meand /= Npatch * 2;
     vard = ssd / (Npatch * 2) - meand*meand;
 
@@ -301,10 +304,10 @@ void write_data()
         << setprecision(5) << meanp2_imm << ";"
         << setprecision(5) << varp1_imm << ";"
         << setprecision(5) << varp2_imm << ";"
-        << setprecision(5) << meanp1_nat << ";"
-        << setprecision(5) << meanp2_nat << ";"
-        << setprecision(5) << varp1_nat << ";"
-        << setprecision(5) << varp2_nat << ";"
+        << setprecision(5) << meanp1phil << ";"
+        << setprecision(5) << meanp2phil << ";"
+        << setprecision(5) << varp1phil << ";"
+        << setprecision(5) << varp2phil << ";"
         << setprecision(5) << meand << ";"
         << setprecision(5) << vard << ";" << endl;
 }
@@ -314,21 +317,32 @@ void write_data_headers()
 {
     DataFile << "generation;";
 
+    // write down all the patch frequency combinations
     for (size_t envt_i = 0; envt_i < 2; ++envt_i)
     {
-        for (size_t n_adapted_imm = 0; n_adapted_imm <= Npp; ++n_adapted_imm)
+        for (size_t state_i = 0; state_i < n_states; ++state_i)
         {
-            for (size_t n_maladapted_imm = 0; n_maladapted_imm <= Npp - n_adapted_imm; ++n_maladapted_imm)
+            switch(state_i)
             {
-                for (size_t n_maladapted_nat = 0; n_maladapted_nat <= Npp - n_adapted_imm - n_maladapted_imm; ++n_maladapted_nat)
-                {
-                    DataFile << setprecision(5) << "f_" << n_maladapted_imm << "_" << n_adapted_imm << "_" << n_maladapted_nat << "_" << n_adapted_nat << ";";
-                }
+                case adapted_imm:
+                    cout << "f_" << envt_i << "adapted_imm;";
+                    break;
+                case adapted_phil:
+                    cout << "f_" << envt_i << "adapted_phil;";
+                    break;
+                case maladapted_imm:
+                    cout << "f_" << envt_i << "maladapted_imm;";
+                    break;
+                case maladapted_phil:
+                    cout << "f_" << envt_i << "maladapted_phil;";
+                    break;
+                default:
+                    break;
             }
         }
     }
     
-    DataFile << "meanp1_imm;meanp2_imm;varp1_imm;varp2_imm;meanp1_nat;meanp2_nat;varp1_nat;varp2_nat;meand;vard;" << endl;
+    DataFile << "meanp1_imm;meanp2_imm;varp1_imm;varp2_imm;meanp1phil;meanp2phil;varp1phil;varp2phil;meand;vard;" << endl;
 }
 
 // parameters at the end of the sim
@@ -356,71 +370,88 @@ void write_parameters()
 
 // switch the state of a patch in state
 // patch_envt (e1 or e2)
-// 0 <= n_adapted_imm <= Npp
-// 0 <= n_maladapted_imm < Npp - n_adapted_imm
-void switch_patch_state(size_t patch_envt, size_t n_adapted_imm, size_t n_maladapted_imm, size_t n_adapted_nat)
+// state first individual
+void switch_patch_state(size_t patch_envt, ind_state state_i)
 {
     // sample a random patch that fulfills the conditions
     size_t random_patch = 
         gsl_rng_uniform_int(r, 
-            Npatches[patch_envt][n_maladapted_imm][n_adapted_imm][n_maladapted_nat][Npp - n_maladapted_imm - n_adapted_imm - n_maladapted_nat];
+            Npatches[patch_envt][state_i]
         );
 
     // get the patch_id 
     size_t random_patch_id = 
-            patch_ids[patch_envt][n_maladapted_imm][n_adapted_imm][n_maladapted_nat][Npp - n_maladapted_imm - n_adapted_imm - n_maladapted_nat][random_patch];
+            patch_ids[patch_envt][state_i][random_patch];
 
     // error checking
-    assert(MetaPop[random_patch_id].state == patch_envt);
-   
+    assert(MetaPop[random_patch_id].environment == patch_envt);
+
 #ifndef NDEBUG
-    size_t n_adapted_check = 0;
-
-    for (size_t breeder_i = 0; breeder_i < Npp; ++breeder_i)
-    {
-        n_adapted_check += MetaPop[random_patch_id].locals[breeder_i].z 
-            == MetaPop[random_patch_id].state;
-    }
-
-    assert(n_adapted_check == n_adapted);
+    assert(MetaPop[random_patch_id].locals[0].state == state_i);
 #endif
 
     // update patch characteristics
-    bool patch_envt_new = !MetaPop[random_patch_id].state;
-    MetaPop[random_patch_id].state = patch_envt_new;
-        
-        
+    bool patch_envt_new = !MetaPop[random_patch_id].environment;
+    MetaPop[random_patch_id].environment = patch_envt_new;
 
-    size_t n_adapted_new = Npp - n_adapted; 
+    ind_state state_i_new;
+
+    switch(state_i)
+    {
+        case adapted_imm:
+            state_i_new = maladapted_imm;
+            break;
+        case maladapted_imm:
+            state_i_new = adapted_imm;
+            break;
+        case adapted_phil:
+            state_i_new = maladapted_phil;
+            break;
+        case maladapted_phil:
+            state_i_new = adapted_phil;
+            break;
+        default:
+            assert(false);
+            break;
+    }
 
     // update statistics
     //
     // delete patch id in the corresponding stack
     // by replacing it with the last patch id in the stack
     // and then deleting the last element (by reducing the counter by 1)
-    patch_ids[patch_envt][n_adapted][random_patch] =
-        patch_ids[patch_envt][n_adapted][
-            --Npatches[patch_envt][n_adapted] 
+    patch_ids[patch_envt][state_i][random_patch] =
+        patch_ids[patch_envt][state_i][
+            --Npatches[patch_envt][state_i] 
         ];
 
     // add patch id to the correct stack
-    patch_ids[patch_envt_new][n_adapted_new][
-        Npatches[patch_envt_new][n_adapted_new]++
+    patch_ids[patch_envt_new][state_i_new][
+        Npatches[patch_envt_new][state_i_new]++
     ] = random_patch_id;
     
     // error checking
-    assert(MetaPop[random_patch_id].state == !patch_envt);
+    assert(MetaPop[random_patch_id].environment == !patch_envt);
    
 #ifndef NDEBUG
-    n_adapted_check = 0;
-
-    for (size_t breeder_i = 0; breeder_i < Npp; ++breeder_i)
+    switch(state_i)
     {
-        n_adapted_check += MetaPop[random_patch_id].locals[breeder_i].z 
-            == MetaPop[random_patch_id].state;
+        case adapted_imm:
+            state_i_new == maladapted_imm;
+            break;
+        case maladapted_imm:
+            state_i_new == adapted_imm;
+            break;
+        case adapted_phil:
+            state_i_new == maladapted_phil;
+            break;
+        case maladapted_phil:
+            state_i_new == adapted_phil;
+            break;
+        default:
+            assert(false);
+            break;
     }
-
-    assert(n_adapted_check == n_adapted_new);
 #endif
 }
 
@@ -431,7 +462,7 @@ void switch_patch_state(size_t patch_envt, size_t n_adapted_imm, size_t n_malada
 // size_t n_adapted: a patch containing n_adapted adapted individuals
 // bool mortality_maladapted: true, maladapted guy dies; false, adapted guy dies;
 
-void mortality(size_t patch_envt, size_t n_adapted, bool mortality_maladapted)
+void mortality(size_t patch_envt, ind_state)
 {
     // sample a random patch that fulfills the conditions
     size_t random_patch = 

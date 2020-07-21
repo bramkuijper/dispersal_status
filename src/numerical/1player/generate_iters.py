@@ -6,12 +6,12 @@ from numpy import *
 
 # frequency of envt 2
 #freq_patch_2 = list(arange(0.01,0.99,0.02))
-freq_patch_2 = list(arange(0.01,0.99,0.02))
+freq_patch_2 = list(arange(0.01,0.99,0.005))
 
 # avarage switch rate
 #sbar = list(arange(-1.5, 0.5, 2.0/50))
-sbar = list(arange(-1.5, 0.5, 2.0/50))
-d = [ 0.1 ]
+sbar = [ -1.5 ] #list(arange(-1.5, 0.5, 2.0/50))
+d = [ 0.5 ]
 
 exe = "./numsolve"
 
