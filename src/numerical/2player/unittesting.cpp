@@ -26,6 +26,7 @@ TEST_CASE("Check basic functionality of patch frequency ordered arrays","[patchf
     pf(0,1,2) = 0.5;
     pf(1,2,3) = 0.8;
 
+    // if order does not matter then these tests should hold
     CHECK(pf(0,1,2) == pf(0,2,1));
-    CHECK(pf(1,2,3) == pf(1,2,3));
+    CHECK(pf(1,2,3) == pf(1,3,2));
 }
