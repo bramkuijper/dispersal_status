@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     27010,        771]
-NotebookOptionsPosition[     23365,        706]
-NotebookOutlinePosition[     23701,        721]
-CellTagsIndexPosition[     23658,        718]
+NotebookDataLength[     28127,        798]
+NotebookOptionsPosition[     24480,        733]
+NotebookOutlinePosition[     24816,        748]
+CellTagsIndexPosition[     24773,        745]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -411,18 +411,22 @@ Cell[BoxData[
     RowBox[{
      RowBox[{"state2replace", "[", 
       RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", "1"}], ",", 
-    RowBox[{
-     RowBox[{"p", "[", "state1", "]"}], "+", 
-     RowBox[{"p", "[", "state2", "]"}]}], ",", 
-    RowBox[{"1", "-", 
+    RowBox[{"0.5", "*", 
      RowBox[{"(", 
       RowBox[{
        RowBox[{"p", "[", "state1", "]"}], "+", 
-       RowBox[{"p", "[", "state2", "]"}]}], ")"}]}]}], "]"}]}]], "Input",
+       RowBox[{"p", "[", "state2", "]"}]}], ")"}]}], ",", 
+    RowBox[{"1", "-", 
+     RowBox[{"0.5", "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"p", "[", "state1", "]"}], "+", 
+        RowBox[{"p", "[", "state2", "]"}]}], ")"}]}]}]}], "]"}]}]], "Input",
  CellChangeTimes->{{3.80440771388654*^9, 3.80440771577252*^9}, {
   3.804408511970985*^9, 3.804408533288638*^9}, {3.8044092065635653`*^9, 
-  3.804409284464057*^9}, {3.8044094674037313`*^9, 
-  3.80440948406571*^9}},ExpressionUUID->"900ced55-d21c-415c-a540-\
+  3.804409284464057*^9}, {3.8044094674037313`*^9, 3.80440948406571*^9}, {
+  3.8056260182962723`*^9, 
+  3.805626029594445*^9}},ExpressionUUID->"900ced55-d21c-415c-a540-\
 a1a8d97656ac"],
 
 Cell["Probability newly chosen offspring of stateX is immigrant", "Text",
@@ -444,7 +448,7 @@ Cell[BoxData[
         RowBox[{"stateCombn", "[", 
          RowBox[{"[", "2", "]"}], "]"}]}], "]"}], 
       RowBox[{"prOffspring", "[", 
-       RowBox[{"state2replace", ",", 
+       RowBox[{"stateX", ",", 
         RowBox[{"{", 
          RowBox[{
           RowBox[{"stateCombn", "[", 
@@ -456,8 +460,9 @@ Cell[BoxData[
      RowBox[{"{", 
       RowBox[{"stateCombn", ",", "sortedStateCombns"}], "}"}]}], 
     "]"}]}]}]], "Input",
- CellChangeTimes->{{3.804417805611017*^9, 
-  3.8044178507338057`*^9}},ExpressionUUID->"5c2655b8-11f3-4a11-baa8-\
+ CellChangeTimes->{{3.804417805611017*^9, 3.8044178507338057`*^9}, {
+  3.8056254905723743`*^9, 
+  3.805625514115546*^9}},ExpressionUUID->"5c2655b8-11f3-4a11-baa8-\
 e8db8ff51bea"],
 
 Cell["\<\
@@ -482,7 +487,9 @@ Cell[BoxData[
      RowBox[{"(", 
       RowBox[{"1", "-", "d"}], ")"}], 
      RowBox[{"prOffspring", "[", 
-      RowBox[{"state2replace", ",", "state1", ",", "state2"}], "]"}]}]}], 
+      RowBox[{"state2replace", ",", 
+       RowBox[{"{", 
+        RowBox[{"state1", ",", "state2"}], "}"}]}], "]"}]}]}], 
    "]"}]}]], "Input",
  CellChangeTimes->{{3.804404180133535*^9, 3.804404215419498*^9}, {
    3.804404275270261*^9, 3.804404283999689*^9}, {3.8044043229552603`*^9, 
@@ -493,7 +500,8 @@ Cell[BoxData[
    3.804407697141897*^9}, 3.804409501282146*^9, {3.8044114123209963`*^9, 
    3.804411508794033*^9}, {3.804411921981739*^9, 3.804411922644023*^9}, {
    3.804412041255933*^9, 3.804412042072854*^9}, {3.804417831440404*^9, 
-   3.80441785973477*^9}},ExpressionUUID->"f428248f-c462-40b5-b16d-\
+   3.80441785973477*^9}, {3.805625536442341*^9, 
+   3.805625538823943*^9}},ExpressionUUID->"f428248f-c462-40b5-b16d-\
 7001f1bc7a29"],
 
 Cell["\<\
@@ -506,63 +514,68 @@ Probability that due to a mortality event at a patch in state \
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"mortReplace", "[", 
+  RowBox[{"replaceC", "[", 
    RowBox[{
     RowBox[{"{", 
-     RowBox[{"ei_", ",", "stateX_", ",", "stateY_"}], "}"}], ",", 
+     RowBox[{"ei_", ",", "state1Target_", ",", "state2Target_"}], "}"}], ",", 
+    
     RowBox[{"{", 
-     RowBox[{"ei_", ",", "state1_", ",", "state2_"}], "}"}]}], "]"}], ":=", 
-  RowBox[{
+     RowBox[{"ei_", ",", "stateDead_", ",", "stateOther_"}], "}"}]}], "]"}], ":=",
+   "\[IndentingNewLine]", 
+  RowBox[{"If", "[", 
    RowBox[{
-    RowBox[{"mu", "[", "stateX", "]"}], 
-    RowBox[{"If", "[", 
-     RowBox[{
-      RowBox[{"stateY", "\[Equal]", "state1"}], ",", 
-      RowBox[{"(*", " ", 
-       RowBox[{
-       "remaining", " ", "breeder", " ", "is", " ", "the", " ", "one", " ", 
-        "with", " ", "state1"}], " ", "*)"}], "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{"immigrant", "[", "state2", "]"}], ",", 
-        RowBox[{"prImmigrant", "[", "state2", "]"}], ",", 
+    RowBox[{
+    "stateDead", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"mu", "[", "stateX", "]"}], 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"stateY", "\[Equal]", "state1"}], ",", 
+       RowBox[{"(*", " ", 
         RowBox[{
-         RowBox[{"(", 
-          RowBox[{"1", "-", "d"}], ")"}], 
-         RowBox[{"prOffspring", "[", 
-          RowBox[{"state2", ",", "stateX", ",", "stateY"}], "]"}]}]}], "]"}], 
-      ",", "\[IndentingNewLine]", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{"immigrant", "[", "state1", "]"}], ",", 
-        RowBox[{"prImmigrant", "[", "state1", "]"}], ",", 
+        "remaining", " ", "breeder", " ", "is", " ", "the", " ", "one", " ", 
+         "in", " ", "state1"}], " ", "*)"}], "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
         RowBox[{
-         RowBox[{"(", 
-          RowBox[{"1", "-", "d"}], ")"}], 
-         RowBox[{"prOffspring", "[", 
-          RowBox[{"state1", ",", "stateX", ",", "stateY"}], "]"}]}]}], 
-       "]"}]}], "]"}]}], "+", 
-   RowBox[{
-    RowBox[{"mu", "[", "stateY", "]"}], 
-    RowBox[{"If", "[", 
-     RowBox[{
-      RowBox[{"stateX", "\[Equal]", "state1"}], ",", 
-      RowBox[{"If", "[", 
-       RowBox[{
-        RowBox[{"immigrant", "[", "state2", "]"}], ",", 
-        RowBox[{"prImmigrant", "[", 
+         RowBox[{"immigrant", "[", "state2", "]"}], ",", 
+         RowBox[{"prImmigrant", "[", "state2", "]"}], ",", 
          RowBox[{
-         "state", "\[IndentingNewLine]", "\[IndentingNewLine]", 
-          "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]",
-           "\[IndentingNewLine]", 
-          RowBox[{"If", "[", 
-           RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "-", "d"}], ")"}], 
+          RowBox[{"prOffspring", "[", 
+           RowBox[{"state2", ",", "stateX", ",", "stateY"}], "]"}]}]}], "]"}],
+        ",", "\[IndentingNewLine]", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"immigrant", "[", "state1", "]"}], ",", 
+         RowBox[{"prImmigrant", "[", "state1", "]"}], ",", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"1", "-", "d"}], ")"}], 
+          RowBox[{"prOffspring", "[", 
+           RowBox[{"state1", ",", "stateX", ",", "stateY"}], "]"}]}]}], 
+        "]"}]}], "]"}]}], "+", 
+    RowBox[{
+     RowBox[{"mu", "[", "stateY", "]"}], 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"stateX", "\[Equal]", "state1"}], ",", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"immigrant", "[", "state2", "]"}], ",", 
+         RowBox[{"prImmigrant", "[", 
+          RowBox[{
+          "state", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
             RowBox[{
-             RowBox[{"Count", "[", 
-              RowBox[{
-               RowBox[{"{", 
-                RowBox[{"state1", ",", "state2"}], "}"}], ",", "stateY"}], 
-              "]"}], ">", "0"}], ","}]}]}]}]}]}]}]}]}]}]}]], "Input",
+             RowBox[{
+              RowBox[{"Count", "[", 
+               RowBox[{
+                RowBox[{"{", 
+                 RowBox[{"state1", ",", "state2"}], "}"}], ",", "stateY"}], 
+               "]"}], ">", "0"}], ","}]}]}]}]}]}]}]}]}]}]}]}]], "Input",
  CellChangeTimes->{{3.8044133294815397`*^9, 3.804413349405788*^9}, {
   3.804413731821506*^9, 3.804413784373888*^9}, {3.804413838192954*^9, 
   3.804413838745558*^9}, {3.8044138856309*^9, 3.804413902151347*^9}, {
@@ -573,7 +586,9 @@ Cell[BoxData[
   3.804417722654396*^9, 3.804417778388214*^9}, {3.804417874082511*^9, 
   3.804417875974719*^9}, {3.804418386781299*^9, 3.8044184224152517`*^9}, {
   3.804418602080493*^9, 3.804418723192807*^9}, {3.804418785111658*^9, 
-  3.804418860066427*^9}},ExpressionUUID->"4944789b-28d0-40c8-b484-\
+  3.804418860066427*^9}, {3.8056271029230757`*^9, 3.80562710299642*^9}, {
+  3.805627396764048*^9, 
+  3.8056274346790447`*^9}},ExpressionUUID->"4944789b-28d0-40c8-b484-\
 b256e9b89d47"]
 }, Open  ]],
 
@@ -606,12 +621,14 @@ Cell[BoxData[
     RowBox[{"s", "[", 
      RowBox[{"3", "-", "ei"}], "]"}], 
     RowBox[{"f", "[", 
-     RowBox[{"ei", ",", 
+     RowBox[{
+      RowBox[{"3", "-", "ei"}], ",", 
       RowBox[{"negAd", "[", "state1", "]"}], ",", 
       RowBox[{"negAd", "[", "state2", "]"}]}], "]"}]}]}]}]], "Input",
  CellChangeTimes->{{3.80440007347901*^9, 3.804400154611746*^9}, 
-   3.8044017997934227`*^9, {3.8044018434330807`*^9, 
-   3.8044019007561703`*^9}},ExpressionUUID->"6210406c-b793-47b8-ab4a-\
+   3.8044017997934227`*^9, {3.8044018434330807`*^9, 3.8044019007561703`*^9}, {
+   3.805626082083363*^9, 
+   3.8056260832080173`*^9}},ExpressionUUID->"6210406c-b793-47b8-ab4a-\
 e57b26900a97"],
 
 Cell["2. Changes due to breeder mortality and replacement", "Text",
@@ -631,7 +648,8 @@ Cell[BoxData[
   RowBox[{
    RowBox[{
     RowBox[{"-", 
-     RowBox[{"mu", "[", "state1", "]"}]}], 
+     RowBox[{"mu", "[", 
+      RowBox[{"ei", ",", "state1"}], "]"}]}], 
     RowBox[{"f", "[", 
      RowBox[{"ei", ",", "state1", ",", "state2"}], "]"}], 
     RowBox[{"(", 
@@ -642,7 +660,8 @@ Cell[BoxData[
          RowBox[{"ei", ",", "state1", ",", "state2"}], "}"}]}], "]"}]}], 
      ")"}]}], "-", 
    RowBox[{
-    RowBox[{"mu", "[", "state2", "]"}], 
+    RowBox[{"mu", "[", 
+     RowBox[{"ei", ",", "state2"}], "]"}], 
     RowBox[{"f", "[", 
      RowBox[{"ei", ",", "state1", ",", "state2"}], "]"}], 
     RowBox[{"(", 
@@ -662,7 +681,10 @@ Cell[BoxData[
     RowBox[{
      RowBox[{
       RowBox[{
-       RowBox[{"mu", "[", "stateCombn", "]"}], 
+       RowBox[{"mu", "[", 
+        RowBox[{"ei", ",", 
+         RowBox[{"stateCombn", "[", 
+          RowBox[{"[", "1", "]"}], "]"}]}], "]"}], 
        RowBox[{"f", "[", 
         RowBox[{"ei", ",", 
          RowBox[{"stateCombn", "[", 
@@ -676,9 +698,12 @@ Cell[BoxData[
          RowBox[{"{", 
           RowBox[{"ei", ",", 
            RowBox[{"stateCombn", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", 
+           RowBox[{"stateCombn", "[", 
             RowBox[{"[", "2", "]"}], "]"}]}], "}"}]}], "]"}]}], "+", 
       RowBox[{
-       RowBox[{"mu", "[", "stateCombn", "]"}], 
+       RowBox[{"mu", "[", 
+        RowBox[{"ei", ",", "stateCombn"}], "]"}], 
        RowBox[{"f", "[", 
         RowBox[{"ei", ",", 
          RowBox[{"stateCombn", "[", 
@@ -697,8 +722,10 @@ Cell[BoxData[
       RowBox[{"stateCombn", ",", "sortedStates2player"}], "}"}]}], 
     "]"}]}]}]], "Input",
  CellChangeTimes->{{3.804407486614122*^9, 3.804407495758277*^9}, {
-   3.804412505883601*^9, 3.8044125626145267`*^9}, 
-   3.8044126926658697`*^9},ExpressionUUID->"11990045-fbc2-434b-a4dc-\
+   3.804412505883601*^9, 3.8044125626145267`*^9}, 3.8044126926658697`*^9, {
+   3.805626052758726*^9, 3.805626058050777*^9}, {3.805627184028791*^9, 
+   3.805627216793524*^9}, {3.805627371729447*^9, 
+   3.805627393290187*^9}},ExpressionUUID->"11990045-fbc2-434b-a4dc-\
 731d30b0e05f"]
 }, Open  ]]
 }, Open  ]]
@@ -756,20 +783,20 @@ Cell[11802, 387, 229, 5, 34, "Output",ExpressionUUID->"c85c20a5-2aff-4804-a264-7
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[12068, 397, 170, 3, 45, "Subsubsection",ExpressionUUID->"ef5a1c52-d576-4b5e-9917-d0038adf5d27"],
-Cell[12241, 402, 875, 23, 52, "Input",ExpressionUUID->"900ced55-d21c-415c-a540-a1a8d97656ac"],
-Cell[13119, 427, 199, 3, 35, "Text",ExpressionUUID->"8cdd1175-8b45-499b-ab69-9df55337c3ed"],
-Cell[13321, 432, 991, 28, 94, "Input",ExpressionUUID->"5c2655b8-11f3-4a11-baa8-e8db8ff51bea"],
-Cell[14315, 462, 264, 6, 35, "Text",ExpressionUUID->"46d27b84-5ac7-43dc-ad9a-bbcadb8539ad"],
-Cell[14582, 470, 1291, 26, 73, "Input",ExpressionUUID->"f428248f-c462-40b5-b16d-7001f1bc7a29"],
-Cell[15876, 498, 279, 6, 58, "Text",ExpressionUUID->"04dfcacd-2eab-46ca-a87a-17429baae9ff"],
-Cell[16158, 506, 2955, 70, 283, "Input",ExpressionUUID->"4944789b-28d0-40c8-b484-b256e9b89d47"]
+Cell[12241, 402, 1017, 27, 52, "Input",ExpressionUUID->"900ced55-d21c-415c-a540-a1a8d97656ac"],
+Cell[13261, 431, 199, 3, 35, "Text",ExpressionUUID->"8cdd1175-8b45-499b-ab69-9df55337c3ed"],
+Cell[13463, 436, 1035, 29, 94, "Input",ExpressionUUID->"5c2655b8-11f3-4a11-baa8-e8db8ff51bea"],
+Cell[14501, 467, 264, 6, 35, "Text",ExpressionUUID->"46d27b84-5ac7-43dc-ad9a-bbcadb8539ad"],
+Cell[14768, 475, 1388, 29, 73, "Input",ExpressionUUID->"f428248f-c462-40b5-b16d-7001f1bc7a29"],
+Cell[16159, 506, 279, 6, 58, "Text",ExpressionUUID->"04dfcacd-2eab-46ca-a87a-17429baae9ff"],
+Cell[16441, 514, 3292, 77, 367, "Input",ExpressionUUID->"4944789b-28d0-40c8-b484-b256e9b89d47"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[19150, 581, 221, 5, 45, "Subsubsection",ExpressionUUID->"1e067dd8-e755-4464-967f-5b01d4a8b8af"],
-Cell[19374, 588, 165, 3, 35, "Text",ExpressionUUID->"832c8a55-1677-4e6f-8625-c12ee46f152d"],
-Cell[19542, 593, 760, 21, 52, "Input",ExpressionUUID->"6210406c-b793-47b8-ab4a-e57b26900a97"],
-Cell[20305, 616, 193, 3, 35, "Text",ExpressionUUID->"32b5fc9a-6a24-4abe-ab22-f234e2880f4a"],
-Cell[20501, 621, 2824, 80, 220, "Input",ExpressionUUID->"11990045-fbc2-434b-a4dc-731d30b0e05f"]
+Cell[19770, 596, 221, 5, 45, "Subsubsection",ExpressionUUID->"1e067dd8-e755-4464-967f-5b01d4a8b8af"],
+Cell[19994, 603, 165, 3, 35, "Text",ExpressionUUID->"832c8a55-1677-4e6f-8625-c12ee46f152d"],
+Cell[20162, 608, 839, 23, 52, "Input",ExpressionUUID->"6210406c-b793-47b8-ab4a-e57b26900a97"],
+Cell[21004, 633, 193, 3, 35, "Text",ExpressionUUID->"32b5fc9a-6a24-4abe-ab22-f234e2880f4a"],
+Cell[21200, 638, 3240, 90, 262, "Input",ExpressionUUID->"11990045-fbc2-434b-a4dc-731d30b0e05f"]
 }, Open  ]]
 }, Open  ]]
 }, Open  ]]
